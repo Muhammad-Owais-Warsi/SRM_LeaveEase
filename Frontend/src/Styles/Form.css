@@ -9,7 +9,18 @@
     width: 170%;
     margin-bottom: 10px; /* Optional: Add some spacing between inputs */
 }
+.form-img img {
+    width:40%;
+}
 
+.form-img {
+    width: 40%;
+    position: relative;
+    right: 42%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 /* Style for both input and textarea */
 .form-input {
     width: 100%;
@@ -22,7 +33,7 @@
 
 .form-head {
     position: relative;
-    top: 32px;
+    top: -14px;
 }
 
 .form-main {
@@ -32,7 +43,7 @@
     flex-direction: column;
     position: relative;
     left: -115px;
-    top: 61px;
+    top: 19px;
 }
 
 .fh {
@@ -104,6 +115,7 @@ textarea {
     font-size: 16px;
     position: relative;
     right: 22px;
+    resize: none;
 }
 textarea:focus,
 textarea:focus {

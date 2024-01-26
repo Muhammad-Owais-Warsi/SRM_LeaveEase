@@ -9,12 +9,15 @@ export default function Navbar() {
     return (
         
         <div className="navbar">
-            
+   
+            <div className="nav-img">
+                <img src="https://srmrmp.edu.in/wp-content/uploads/2022/01/logo1.png" alt="" />
+            </div>
             <div className="nav-items">
                 <ul>
                     <li>
                         <Link to="/">
-                            Home
+                            H.C
                         </Link>
                     </li>
                     <li>

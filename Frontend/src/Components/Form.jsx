@@ -18,11 +18,11 @@ export default function Form() {
     const [personalPhone, setPersonalPhone] = useState();
     const [parentPhone, setParentPhone] = useState();
 
- 
 
 
 
- 
+
+
 
 
     const Onsubmit = async () => {
@@ -68,7 +68,7 @@ export default function Form() {
                     dateOut: dateOut,
                     personalPhone: personalPhone,
                     parentPhone: parentPhone,
-                    reason:reason
+                    reason: reason
                 },
             });
         } catch (error) {
@@ -83,6 +83,10 @@ export default function Form() {
                 position="top-center"
                 reverseOrder={false}
             />
+            <div className="form-img">
+                <img src="https://srmrmp.edu.in/wp-content/uploads/2022/01/logo1.png" alt="" />
+            </div>
+
             <div className="form-head">Leave Application</div>
             <div className="form-main">
                 <div className="name-container" style={{ marginBottom: "15px" }}>
@@ -117,15 +121,15 @@ export default function Form() {
                         <div className="parent-contact-head fh">Parent Phone <span>*</span></div>
                     </div>
                 </div>
-                <div className="reason-container" style={{position:"relative",top:"11px"}}>
+                <div className="reason-container" style={{ position: "relative", top: "11px" }}>
                     <textarea
-                
+
                         onChange={(e) => setReason(e.target.value)}
                         required
-                        
+
                     />
 
-                    <div className="reason-head" style={{position:"relative",left:"-22px"}}>Reason <span style={{color:"red"}}>*</span></div>
+                    <div className="reason-head" style={{ position: "relative", left: "-22px" }}>Reason <span style={{ color: "red" }}>*</span></div>
                 </div>
 
 
@@ -133,6 +137,8 @@ export default function Form() {
                     <button className="submit" onClick={Onsubmit}>Submit</button>
                 </div>
             </div>
+
+
         </div>
     )
 }

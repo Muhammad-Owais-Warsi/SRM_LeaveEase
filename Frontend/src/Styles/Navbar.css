@@ -1,7 +1,11 @@
-.navbar {
+/* .navbar {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
+}
+
+.nav-img img {
+    width: 20%;
 }
 
 .nav-items {
@@ -48,4 +52,73 @@
 .nav-items ul li a:hover::after {
     width: 100%;
     
+} */
+
+
+/* Your other styles for the navbar, etc. go here */
+
+
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(160, 202, 236);
+   
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    position: relative;
+}
+
+.nav-img img {
+    width: 20%;
+}
+
+.nav-items {
+    margin-top: 3px;
+    width: 34%;
+    margin-left: -24px;
+    position: relative;
+    left: -109px;
+}
+
+.nav-items ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-items ul li {
+    list-style: none;
+    font-size: 30px;
+    padding: 20px;
+    
+}
+
+.nav-items ul li a {
+    text-decoration: none;
+    color:white;
+    position: relative;
+}
+
+.nav-items ul li a::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 2px;
+    background-color: rgb(53, 135, 243);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transition: width 0.3s ease; 
+}
+
+.nav-items ul li a:hover {
+    color: rgb(53, 135, 243);
+}
+
+.nav-items ul li a:hover::after {
+    width: 100%;
 }

@@ -1,11 +1,30 @@
 /* Hero.css */
+
 .hero {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     position: relative;
-    top: 70px;
+    height: 100vh;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://images.shiksha.com/mediadata/images/1584766245phpeMvi5L.jpeg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.3; /* Adjust the opacity as needed */
+}
+
+.hero-btn {
+    position: relative;
+    z-index: 1; /* Ensure a higher z-index to make the button clickable */
 }
 
 .hero-btn button {
@@ -25,6 +44,7 @@
 .hero-btn button:hover {
     background-position: -100% 0;
     color: #fff;
+    border: 2px solid black;
 }
 
 .hero-text {
@@ -45,12 +65,12 @@
     width: 0;
     animation: typing 7s steps(40) infinite, blinkCursor 1s infinite step-end;
     position: relative;
-    top:170px;
+    top: 170px;
 }
 
 .leave {
     position: relative;
-    top:-120px;
+    top: -120px;
     font-size: 100px;
 }
 
@@ -61,7 +81,8 @@
     }
     50% {
         width: 100%;
-        color: rgb(9, 8, 82);
+        color: rgb(41, 92, 233);
+        /* rgb(9, 8, 82); */
     }
 }
 

@@ -3,7 +3,7 @@
     justify-content: space-evenly;
     align-items: center;
     flex-wrap: wrap;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 .application {
@@ -80,4 +80,18 @@
 
 .approve-btn:hover {
     background-color: #27ae60;
+}
+
+
+.back_home_btn {
+    width: 10%;
+    position: relative;
+    left: 46%;
+}
+
+.app-head {
+    font-size: 48px;
+    position: relative;
+    top: 4px;
+    margin-bottom: 4px;
 }

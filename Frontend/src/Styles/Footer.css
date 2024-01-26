@@ -2,10 +2,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height:400px;
+    height:481px;
     /* background-color: rgb(194, 177, 177); */
     background-color: rgb(224,224,224);
-    margin-top:389px;
+    margin-top:281px;
+    flex-direction: column;
+}
+
+.footer-display{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
 }
 
 .footer-contact {
@@ -14,6 +22,17 @@
     align-items: center;
     flex-direction: column;
     width:50%;
+    
+}
+
+.footer-img {
+    position: relative;
+    top: -86px;
+    left:22px;
+}
+
+.footer-img img{
+    width:40%;
 }
 
 .phone{
@@ -21,8 +40,9 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    top: -67px;
-
+    top: -30px;
+    left: -211px;
+    
     
 }
 
@@ -31,6 +51,7 @@
     padding-left: 22px;
     position: relative;
     left: -5px;
+    color:rgb(12,82,159);
 }
 
 
@@ -40,6 +61,9 @@
     justify-content: center;
     align-items: center;
     flex-direction: row;
+    position: relative;
+    left: -151px;
+    top: 46px;
 }
 
 .mailTo {
@@ -49,7 +73,8 @@
 
 .mailTo a {
     text-decoration: none;
-    color:black;
+ 
+    color:rgb(12,82,159);
 }
 
 .mailTo a:hover {
@@ -63,22 +88,29 @@
     align-items: center;
     flex-direction: column;
     width: 50%;
+    position: relative;
+    top:-73px;
 
 }
 
 .footer-about-desc {
     position: relative;
-    top: -41px;
+    top: 51px;
+    
+
 }
 
 .footer-about-head {
     font-size:30px;
+    color:black;
+    color:rgb(12,82,159);
 
 }
 
 .footer-about-contribute {
     position: relative;
-    top: 63px;
+    top: 155px;
+    left: -233px;
 }
 
 .footer-about-contribute a {
@@ -91,4 +123,23 @@
 .footer-about-contribute a:hover {
     text-decoration: underline;
     color:blue;
+}
+
+.footer-credit {
+    /* border: 2px solid red; */
+    width: 99.9%;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    position: relative;
+    height: 12%;
+    top: 22%;
+    background-color: black;
+}
+
+.credit-copyright {
+    display: flex;
+    justify-content: center;
+    align-items:center;
+
 }

@@ -230,6 +230,9 @@ const FaApp = () => {
     return (
         <>
             <div className='applications'>
+                <div className='app-head'>
+                    Applications
+                </div>
                 {forms.map((person, index) => (
                     <div key={index} className='application'>
                         <h1>{person.name}</h1>
@@ -251,7 +254,7 @@ const FaApp = () => {
                 ))}
 
             </div>
-            <button onClick={() => navigate("/")}>Back to Home</button>
+            <button onClick={() => navigate("/")} className='back_home_btn'>Back to Home</button>
         </>
     );
 };
