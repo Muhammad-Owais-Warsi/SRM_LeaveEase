@@ -197,7 +197,7 @@ const Hod = mongoose.model("Hod", hodSchema);
 const Hcoord = mongoose.model("Hcoord", hcoordSchema);
 
 app.get("/", async (req, res) => {
-  const users = await User.find({});
+  const users = await Hcoord.find({});
   res.json(users);
 });
 
@@ -260,21 +260,20 @@ app.post("/user/login", async (req, res) => {
 
 app.post("/hostel_coordinator/login", async (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) {
-    res.status(401).json({ msg: "Invalid email or password" });
-  }
 
-  else if (email == process.env.MAIL_USER && password == process.env.MAIL_USER_PASS) {
-    const data = await Fa.find({});
-    if (data) {
-      res.status(200).json({ message: "success login" });
+  if (!email || !password) {
+    res.status(401).json({ message: "Repeated values found." });
+  } else {
+    if (email === primary_mail && password === process.env.MAIL_USER_PASS) {
+      const data = await Hcoord.find({});
+      if (data) {
+        res.status(200).json({ message: " success", data });
+      } else {
+        res.status(401).json({ message: "error" });
+      }
+    } else {
+      res.status(400).json({ message: "error" });
     }
-    else {
-      res.status(404).json({ message: "error found" });
-    }
-  }
-  else {
-    res.status(404).json({ message: "error" });
   }
 
 });
@@ -413,7 +412,7 @@ app.post("/hostel_coordinator/reject", async (req, res) => {
 
   const newData = await Hcoord.find({});
 
-  if (user) {
+  if (user && deleteUser) {
     var transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -514,7 +513,7 @@ app.post("/form", async (req, res) => {
     if (duplicateValue) {
       res.status(400).json({ message: "duplicate values found" });
     } else {
-      const FaUser = await Hcoord.create({
+      const newUser = await Hcoord.create({
         name: name,
         email: email,
         register: register,
@@ -577,7 +576,7 @@ app.post("/form", async (req, res) => {
           console.log("mail sent " + info);
         }
       });
-      res.status(200).json({ message: FaUser });
+      res.status(200).json({ message: newUser });
     }
   } catch (err) {
     console.log(err);
@@ -709,6 +708,96 @@ app.post("/fa/reject", async (req, res) => {
     }
   }
 });
+
+function sendFAapprovalmail(email, userName) {
+  var transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "bhattacharjeedeboneil@gmail.com",
+      pass: "hpyf xhha klgs djmy",
+    },
+  });
+
+  var mailOptions = {
+    from: "bhattacharjeedeboneil@gmail.com",
+    to: email,
+    subject: "Application Forwarded",
+    html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+              body {
+                  font-family: 'Arial', sans-serif;
+                  background-color: #f5f5f5;
+                  margin: 0;
+                  padding: 0;
+              }
+      
+              .container {
+                  max-width: 600px;
+                  margin: 20px auto;
+                  padding: 20px;
+                  background-color: #ffffff;
+                  border: 1px solid #ccc;
+                  border-radius: 5px;
+                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+              }
+      
+              h2 {
+                  color: #333;
+                  margin-bottom: 20px;
+              }
+      
+              p {
+                  color: #555;
+                  line-height: 1.6;
+              }
+      
+              a {
+                  color: #007bff;
+                  text-decoration: none;
+              }
+      
+              a:hover {
+                  text-decoration: underline;
+              }
+      
+              .footer {
+                  margin-top: 20px;
+                  text-align: center;
+                  color: #777;
+                  font-size: 14px;
+              }
+          </style>
+      </head>
+      <body>
+          <div class="container">
+              <h2>Your Application has been forwarded by the Faculty Advisor to the Head Of Department(H.O.D)</h2>
+              <p>Dear ${userName},</p>
+              <p>We are pleased to inform you that your leave application has been forwarded by the Faculty Advisor to the Head Of Department (H.O.D) for further processing.</p>
+              <p>If you have any questions or need additional information, please feel free to <a href="mailto:support@example.com">contact our support team</a>.</p>
+              <p>Best regards,<br> Team LeaveEase</p>
+          </div>
+          <div class="footer">
+              <p>This is an automated message. Please do not reply to this email.</p>
+          </div>
+      </body>
+      </html>
+      
+      `,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+}
 
 
 

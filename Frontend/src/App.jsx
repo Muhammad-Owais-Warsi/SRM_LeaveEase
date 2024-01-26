@@ -7,6 +7,8 @@ import HodLogin from "./Components/HodLogin.jsx"
 import Form from "./Components/Form.jsx";
 import FaApp from "./Components/FaApplication.jsx"
 import HodApp from "./Components/HodApplication.jsx"
+import HcLogin from "./Components/HcLogin.jsx";
+import HcApp from "./Components/HcApplications.jsx";
 
 function App() {
   useEffect(() => {
@@ -32,6 +34,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home></Home>}></Route>
           <Route path="/UserLogin" element={<UserLogin></UserLogin>}></Route>
+          <Route path="/HC" element={<HcLogin></HcLogin>}></Route>
+          <Route path="/HcApplication" element={<HcApp></HcApp>}></Route>
           <Route path="/FA" element={<FaLogin></FaLogin>}></Route>
           <Route path="/HOD" element={<HodLogin></HodLogin>}></Route>
           <Route path="/Form" element={<Form></Form>}></Route>

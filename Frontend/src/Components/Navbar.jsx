@@ -16,7 +16,7 @@ export default function Navbar() {
             <div className="nav-items">
                 <ul>
                     <li>
-                        <Link to="/">
+                        <Link to="/HC">
                             H.C
                         </Link>
                     </li>

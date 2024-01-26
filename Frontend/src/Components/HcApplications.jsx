@@ -4,6 +4,7 @@ import "../Styles/Root.css"
 import "../Styles/FaApplication.css"
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 
 
 export default function HcApp() {
@@ -157,7 +158,7 @@ export default function HcApp() {
                 setForms(response.data.newData);
                 toast.success("Form successfully rejected!", { icon: '✅' });
                 // Save the updated data to the URL
-                const updatedUrl = `/FaApplication?data=${encodeURIComponent(JSON.stringify({ data: { data: response.data.newData } }))}`;
+                const updatedUrl = `/HcApplication?data=${encodeURIComponent(JSON.stringify({ data: { data: response.data.newData } }))}`;
                 navigate(updatedUrl);
             } else {
                 console.error("Invalid response format:", response);
@@ -183,7 +184,7 @@ export default function HcApp() {
                 setForms(response.data.newData);
                 toast.success("Form successfully rejected!", { icon: '✅' });
                 // Save the updated data to the URL
-                const updatedUrl = `/FaApplication?data=${encodeURIComponent(JSON.stringify({ data: { data: response.data.newData } }))}`;
+                const updatedUrl = `/HcApplication?data=${encodeURIComponent(JSON.stringify({ data: { data: response.data.newData } }))}`;
                 navigate(updatedUrl);
             } else {
                 console.error("Invalid response format:", response);
@@ -201,7 +202,7 @@ export default function HcApp() {
 
     const rejectForm = async (email) => {
         try {
-            const response = await axios.post("http://localhost:3000/fa/reject", {
+            const response = await axios.post("http://localhost:3000/hostel_coordinator/reject", {
                 email: email
             });
             console.log(response);
@@ -214,7 +215,7 @@ export default function HcApp() {
 
     const approveForm = async (email) => {
         try {
-            const response = await axios.post("http://localhost:3000/fa/approve", {
+            const response = await axios.post("http://localhost:3000/hostel_coordinator/approve", {
                 email: email
             });
             console.log(response);
@@ -232,25 +233,27 @@ export default function HcApp() {
                 <div className='app-head'>
                     Applications
                 </div>
-                {forms.map((person, index) => (
-                    <div key={index} className='application'>
-                        <h1>{person.name}</h1>
-                        <p>Register Number: {person.register}</p>
-                        <p>Email: {person.email}</p>
-                        <div className='card-btn'>
-                            <div className='card-view-btn'>
-                                <button className='view-btn' onClick={() => handleViewClick(person)} style={{ position: "relative", top: "-53px", left: "-67px" }}>View</button>
+                <div className='all_app'>
+                    {forms.map((person, index) => (
+                        <div key={index} className='application'>
+                            <h1>{person.name}</h1>
+                            <p>Register Number: {person.register}</p>
+                            <p>Email: {person.email}</p>
+                            <div className='card-btn'>
+                                <div className='card-view-btn'>
+                                    <button className='view-btn' onClick={() => handleViewClick(person)} style={{ position: "relative", top: "-53px", left: "-67px" }}>View</button>
 
+                                </div>
+                                <div className='card-action-btn'>
+                                    <button className='approve-btn' onClick={() => handleApprove(index)} style={{ position: "relative", left: "-62px", width: "71%" }}>Approve</button>
+                                    <button className='del-btn' onClick={() => handleRemoveClick(index)} style={{ position: "relative", left: "9px", width: "100px" }}>Reject</button>
+                                </div>
                             </div>
-                            <div className='card-action-btn'>
-                                <button className='approve-btn' onClick={() => handleApprove(index)} style={{ position: "relative", left: "-62px", width: "71%" }}>Approve</button>
-                                <button className='del-btn' onClick={() => handleRemoveClick(index)} style={{ position: "relative", left: "9px", width: "100px" }}>Reject</button>
-                            </div>
+
+                            <hr />
                         </div>
-
-                        <hr />
-                    </div>
-                ))}
+                    ))}
+                </div>
 
             </div>
             <button onClick={() => navigate("/")} className='back_home_btn'>Back to Home</button>
