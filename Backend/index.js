@@ -85,6 +85,59 @@ const faSchema = new mongoose.Schema({
   },
 });
 
+const hcoordSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  register: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  form: {
+    name: {
+      type: String,
+      required: true,
+    },
+    register: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    dateIn: {
+      type: Date,
+      required: true,
+    },
+    dateOut: {
+      type: String,
+      required: true,
+    },
+    personalPhone: {
+      type: Number,
+      required: true,
+    },
+    parentPhone: {
+      type: Number,
+      required: true,
+    },
+    reason: {
+      type: String,
+      required: true,
+    },
+  },
+});
+
 const hodSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -141,6 +194,7 @@ const hodSchema = new mongoose.Schema({
 const User = mongoose.model("User", userSchema);
 const Fa = mongoose.model("Fa", faSchema);
 const Hod = mongoose.model("Hod", hodSchema);
+const Hcoord = mongoose.model("Hcoord", hcoordSchema);
 
 app.get("/", async (req, res) => {
   const users = await User.find({});
@@ -164,6 +218,7 @@ app.get("/formdata", async (req, res) => {
 });
 
 app.delete("/delete", async (req, res) => {
+  await Hcoord.deleteMany({});
   await User.deleteMany({});
   await Fa.deleteMany({});
   await Hod.deleteMany({});
@@ -171,34 +226,282 @@ app.delete("/delete", async (req, res) => {
 });
 
 app.post("/user/login", async (req, res) => {
-  try{
+  try {
     const { email, register } = req.body;
 
-  const duplicateUser = await User.findOne({ email, register });
-  const duplicateFaUser = await User.findOne({ email, register });
-  const duplicateHodUser = await User.findOne({ email, register });
+    const duplicateUser = await User.findOne({ email, register });
+    const duplicateFaUser = await User.findOne({ email, register });
+    const duplicateHodUser = await User.findOne({ email, register });
 
-  if (duplicateUser || duplicateHodUser || duplicateFaUser) {
-    res.status(400).json({ message: "error found" });
-  } else if (duplicateUser && (!duplicateFaUser || !duplicateHodUser)) {
-    const userDelete = await User.deleteOne({ email });
-    const newUser = await User.create({
-      email: email,
-      register: register,
-    });
+    if (duplicateUser || duplicateHodUser || duplicateFaUser) {
+      res.status(400).json({ message: "error found" });
+    } else if (duplicateUser && (!duplicateFaUser || !duplicateHodUser)) {
+      const userDelete = await User.deleteOne({ email });
+      const newUser = await User.create({
+        email: email,
+        register: register,
+      });
 
-    res.status(200).json({ message: newUser });
-  } else {
-    const newUser = await User.create({
-      email: email,
-      register: register,
-    });
-  }
-  res.status(200).json({ message: "success" });
-  }
-  catch(error){
+      res.status(200).json({ message: newUser });
+    } else {
+      const newUser = await User.create({
+        email: email,
+        register: register,
+      });
+    }
+    res.status(200).json({ message: "success" });
+  } catch (error) {
     console.log(error);
-    res.status(400).json({ message: "error found"});
+    res.status(400).json({ message: "error found" });
+  }
+});
+
+// Hostel Co-ordinator Login //
+
+app.post("/hostel_coordinator/login", async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    res.status(401).json({ msg: "Invalid email or password" });
+  }
+
+  else if (email == process.env.MAIL_USER && password == process.env.MAIL_USER_PASS) {
+    const data = await Fa.find({});
+    if (data) {
+      res.status(200).json({ message: "success login" });
+    }
+    else {
+      res.status(404).json({ message: "error found" });
+    }
+  }
+  else {
+    res.status(404).json({ message: "error" });
+  }
+
+});
+
+// Hostel Coordinator Email Setup // 
+
+function sendHcoordapprovalmail(email, userName) {
+  var transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "bhattacharjeedeboneil@gmail.com",
+      pass: "hpyf xhha klgs djmy",
+    },
+  });
+
+  var mailOptions = {
+    from: "bhattacharjeedeboneil@gmail.com",
+    to: email,
+    subject: "Application Forwarded",
+    html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+              body {
+                  font-family: 'Arial', sans-serif;
+                  background-color: #f5f5f5;
+                  margin: 0;
+                  padding: 0;
+              }
+      
+              .container {
+                  max-width: 600px;
+                  margin: 20px auto;
+                  padding: 20px;
+                  background-color: #ffffff;
+                  border: 1px solid #ccc;
+                  border-radius: 5px;
+                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+              }
+      
+              h2 {
+                  color: #333;
+                  margin-bottom: 20px;
+              }
+      
+              p {
+                  color: #555;
+                  line-height: 1.6;
+              }
+      
+              a {
+                  color: #007bff;
+                  text-decoration: none;
+              }
+      
+              a:hover {
+                  text-decoration: underline;
+              }
+      
+              .footer {
+                  margin-top: 20px;
+                  text-align: center;
+                  color: #777;
+                  font-size: 14px;
+              }
+          </style>
+      </head>
+      <body>
+          <div class="container">
+              <h2>Your Application has been forwarded by the Hostel Co-ordinator to the Faculty Advisor</h2>
+              <p>Dear ${userName},</p>
+              <p>We are pleased to inform you that your leave application has been forwarded by the Hostel Co-ordinator to the Faculty Advisor (FA) for further processing.</p>
+              <p>If you have any questions or need additional information, please feel free to <a href="mailto:support@example.com">contact our support team</a>.</p>
+              <p>Best regards,<br> Team LeaveEase</p>
+          </div>
+          <div class="footer">
+              <p>This is an automated message. Please do not reply to this email.</p>
+          </div>
+      </body>
+      </html>
+      
+      `,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+}
+
+// Hostel Coordinator Approve // 
+
+app.post("/hostel_coordinator/approve", async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    res.status(404).json({ message: "please enter a valid email" });
+  }
+  const approvedUser = await Hcoord.findOne({ email: email });
+  const deleteUser = await Hcoord.deleteOne({ email: email });
+
+  const newUser = await Fa.create({
+    name: approvedUser.name,
+    email: approvedUser.email,
+    register: approvedUser.register,
+    form: approvedUser.form,
+  });
+
+  const newData = await Hcoord.find({});
+
+  if (!newUser || !approvedUser || !deleteUser) {
+    res.status(404).json({ messaage: "error" });
+  }
+  else {
+    sendHcoordapprovalmail(approvedUser.email, approvedUser.name);
+    res.status(200).json({ newData });
+    console.log("email sent!! ");
+  }
+
+});
+
+// Hostel Coordinator Reject //
+
+app.post("/hostel_coordinator/reject", async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    res.status(404).json({ message: "error" });
+  }
+  const user = await Hcoord.findOne({ email: email });
+  const deleteUser = await Hcoord.deleteOne({ email: email });
+
+  const newData = await Hcoord.find({});
+
+  if (user) {
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: primary_mail,
+        pass: primary_mail_pass,
+      },
+    });
+
+    var mailOptions = {
+      from: primary_mail,
+      to: `${email}`,
+      subject: "Application Rejected - Notification",
+      html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+              body {
+                  font-family: 'Arial', sans-serif;
+                  background-color: #f5f5f5;
+                  margin: 0;
+                  padding: 0;
+              }
+      
+              .container {
+                  max-width: 600px;
+                  margin: 20px auto;
+                  padding: 20px;
+                  background-color: #ffffff;
+                  border: 1px solid #ccc;
+                  border-radius: 5px;
+                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+              }
+      
+              h2 {
+                  color: #333;
+                  margin-bottom: 20px;
+              }
+      
+              p {
+                  color: #555;
+                  line-height: 1.6;
+              }
+      
+              a {
+                  color: #007bff;
+                  text-decoration: none;
+              }
+      
+              a:hover {
+                  text-decoration: underline;
+              }
+      
+              .footer {
+                  margin-top: 20px;
+                  text-align: center;
+                  color: #777;
+                  font-size: 14px;
+              }
+          </style>
+      </head>
+      <body>
+          <div class="container">
+              <h2>Your Application has been Rejected</h2>
+              <p>Dear ${user.name},</p>
+              <p>We regret to inform you that your leave application has been rejected due to some reasons, as communicated by the Hostel Co-ordinator.</p>
+              <p>If you have any questions or need further clarification, please feel free to <a href="mailto:support@example.com">contact our support team</a>.</p>
+              <p>Best regards,<br> Team LeaveEase</p>
+          </div>
+          <div class="footer">
+              <p>This is an automated message. Please do not reply to this email.</p>
+          </div>
+      </body>
+      </html>
+              `,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
+
+    res.status(200).json({ newData });
   }
 });
 
@@ -206,12 +509,12 @@ app.post("/form", async (req, res) => {
   try {
     const { name, email, register, form } = req.body;
 
-    const duplicateValue = await Fa.findOne({ email });
+    const duplicateValue = await Hcoord.findOne({ email });
 
     if (duplicateValue) {
       res.status(400).json({ message: "duplicate values found" });
     } else {
-      const FaUser = await Fa.create({
+      const FaUser = await Hcoord.create({
         name: name,
         email: email,
         register: register,
@@ -294,8 +597,8 @@ app.post("/fa/login", async (req, res) => {
       } else {
         res.status(401).json({ message: "error" });
       }
-    }else{
-    res.status(400).json({ message: "error" });
+    } else {
+      res.status(400).json({ message: "error" });
     }
   }
 });
@@ -307,12 +610,12 @@ app.post("/fa/reject", async (req, res) => {
     res.status(401).json({ message: "error" });
   } else {
     const user = await Fa.findOne({ email });
-    const userDelete = await User.deleteOne({ email });
+
     const faDelete = await Fa.deleteOne({ email });
 
-    const newData = await Fa.find({});
+    const newData = await Fa.find({}).lean();
 
-    if (userDelete && faDelete) {
+    if (faDelete && user) {
       var transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -407,95 +710,7 @@ app.post("/fa/reject", async (req, res) => {
   }
 });
 
-function sendFAapprovalmail(email, userName){
-    var transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "bhattacharjeedeboneil@gmail.com",
-        pass: 'hpyf xhha klgs djmy',
-      },
-    });
 
-    var mailOptions = {
-      from: "bhattacharjeedeboneil@gmail.com",
-      to: email,
-      subject: "Application Submitted",
-      html: `
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <style>
-              body {
-                  font-family: 'Arial', sans-serif;
-                  background-color: #f5f5f5;
-                  margin: 0;
-                  padding: 0;
-              }
-      
-              .container {
-                  max-width: 600px;
-                  margin: 20px auto;
-                  padding: 20px;
-                  background-color: #ffffff;
-                  border: 1px solid #ccc;
-                  border-radius: 5px;
-                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-              }
-      
-              h2 {
-                  color: #333;
-                  margin-bottom: 20px;
-              }
-      
-              p {
-                  color: #555;
-                  line-height: 1.6;
-              }
-      
-              a {
-                  color: #007bff;
-                  text-decoration: none;
-              }
-      
-              a:hover {
-                  text-decoration: underline;
-              }
-      
-              .footer {
-                  margin-top: 20px;
-                  text-align: center;
-                  color: #777;
-                  font-size: 14px;
-              }
-          </style>
-      </head>
-      <body>
-          <div class="container">
-              <h2>Your Application has been approved by Faculty Advisor</h2>
-              <p>Dear ${userName},</p>
-              <p>We are pleased to inform you that your leave application has been approved by the Faculty Advisor and has been forwarded to the Head of Department (HOD) for further processing.</p>
-              <p>If you have any questions or need additional information, please feel free to <a href="mailto:support@example.com">contact our support team</a>.</p>
-              <p>Best regards,<br> Team LeaveEase</p>
-          </div>
-          <div class="footer">
-              <p>This is an automated message. Please do not reply to this email.</p>
-          </div>
-      </body>
-      </html>
-      
-      `,
-    };
-
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Email sent: " + info.response);
-      }
-    });
-  }
 
 app.post("/fa/approve", async (req, res) => {
   const { email } = req.body;
@@ -516,8 +731,7 @@ app.post("/fa/approve", async (req, res) => {
   const newData = await Fa.find({});
   if (!approvedUser || !faDelete || !newUser) {
     res.status(404).json({ message: "User not found" });
-  }
-  else{
+  } else {
     sendFAapprovalmail(approvedUser.email, approvedUser.name);
     res.status(200).json({ newData });
     console.log("sent NewData and mail successfully!.");
@@ -545,13 +759,12 @@ app.post("/hod/reject", async (req, res) => {
   if (!email) {
     res.status(404).json({ message: "error" });
   } else {
-    const user = await Hod.findOne({ email:email });
+    const user = await Hod.findOne({ email: email });
     const hodDelete = await Hod.deleteOne({ email: email });
     const userDelete = await User.deleteOne({ email: email });
 
     const newData = await Hod.find({});
 
-    
     if (hodDelete && userDelete) {
       var transporter = nodemailer.createTransport({
         service: "gmail",
@@ -642,8 +855,7 @@ app.post("/hod/reject", async (req, res) => {
       });
 
       res.status(200).json({ newData });
-    } 
-    
+    }
   }
 });
 
