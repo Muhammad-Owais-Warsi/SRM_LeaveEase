@@ -296,13 +296,13 @@ function sendHcoordapprovalmail(email, userName) {
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "bhattacharjeedeboneil@gmail.com",
-      pass: "hpyf xhha klgs djmy",
+      user: primary_mail,
+      pass: primary_mail_pass,
     },
   });
 
   var mailOptions = {
-    from: "bhattacharjeedeboneil@gmail.com",
+    from: primary_mail,
     to: email,
     subject: "Application Forwarded",
     html: `
@@ -543,43 +543,70 @@ app.post("/form", async (req, res) => {
         from: primary_mail,
         to: `${email}`,
         subject: "Application Submitted",
-        html: `
-                <html>
-                    <head>
-                        <style>
-                            body {
-                                font-family: Arial, sans-serif;
-                            }
-            
-                            .container {
-                                max-width: 600px;
-                                margin: 0 auto;
-                                padding: 20px;
-                                border: 1px solid #ccc;
-                                border-radius: 5px;
-                            }
-            
-                            h2 {
-                                color: #333;
-                            }
-            
-                            p {
-                                color: #555;
-                            }
-                            a{
-                                color:blue;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="container">
-                            <h2>Your Application has been Submitted</h2>
-                            <p>Thank you for submitting your application. We will review it and inform you soon.</p>
-                            <a>Leave Ease<a/>
-                        </div>
-                    </body>
-                </html>
-            `,
+        html: `<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                body {
+                    font-family: 'Arial', sans-serif;
+                    background-color: #f5f5f5;
+                    margin: 0;
+                    padding: 0;
+                }
+        
+                .container {
+                    max-width: 600px;
+                    margin: 20px auto;
+                    padding: 20px;
+                    background-color: #ffffff;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+        
+                h2 {
+                    color: #333;
+                    margin-bottom: 20px;
+                }
+        
+                p {
+                    color: #555;
+                    line-height: 1.6;
+                }
+        
+                a {
+                    color: #007bff;
+                    text-decoration: none;
+                }
+        
+                a:hover {
+                    text-decoration: underline;
+                }
+        
+                .footer {
+                    margin-top: 20px;
+                    text-align: center;
+                    color: #777;
+                    font-size: 14px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h2>Your Application has been Submitted</h2>
+                <p>Dear ${name}},</p>
+                <p>Thank you for submitting your application. Our team will carefully review it, and we will inform you of the outcome as soon as possible.</p>
+                <p>In the meantime, if you have any questions or need further assistance, please feel free to <a href="mailto:">contact our support team</a>.</p>
+                <p>Best regards,<br> Team LeaveEase</p>
+            </div>
+            <div class="footer">
+                <p>This is an automated message. Please do not reply to this email.</p>
+            </div>
+        </body>
+        </html>
+        `,
       };
       transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
@@ -725,13 +752,13 @@ function sendFAapprovalmail(email, userName) {
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "bhattacharjeedeboneil@gmail.com",
-      pass: "hpyf xhha klgs djmy",
+      user: primary_mail,
+      pass: primary_mail_pass,
     },
   });
 
   var mailOptions = {
-    from: "bhattacharjeedeboneil@gmail.com",
+    from: primary_mail,
     to: email,
     subject: "Application Forwarded",
     html: `
@@ -1004,7 +1031,7 @@ const generateQr = async (qrData, Student, timestamp) => {
                   </div>
                   <div>
                       <label>Reason:</label>
-                      <div>A${Student.form.reason}</div>
+                      <div>${Student.form.reason}</div>
                   </div>
               
               </div>

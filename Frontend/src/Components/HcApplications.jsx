@@ -70,6 +70,10 @@ export default function HcApp() {
                 <div class="email-head">Email</div>
                 <div class="email-info">${person.email}</div>
             </div>
+            <div class="room">
+                <div class="room-head">Room Number</div>
+                <div class="room-info">${person.form.room}</div>
+            </div>
             <div class="date">
                 <div class="dateOut-head">Date Out</div>
                 <div class="dateOut-info">${person.form.dateOut}</div>
@@ -105,17 +109,17 @@ export default function HcApp() {
                 margin: 20px auto;
             }
     
-            .name, .register, .email, .date, .contact, .reason {
+            .name, .register, .email,.room ,.date, .contact, .reason {
                 margin-bottom: 15px;
             }
     
-            .name-head, .register-head, .email-head, .dateOut-head, .dateIn-head, .personal-head, .parent-head, .reason-head {
+            .name-head, .register-head, .email-head,.room-head ,.dateOut-head, .dateIn-head, .personal-head, .parent-head, .reason-head {
                 font-weight: bold;
                 margin-bottom: 5px;
                 color: #333;
             }
     
-            .name-info, .register-info, .email-info, .dateOut-info, .dateIn-info, .personal-info, .parent-info, .reason-info {
+            .name-info, .register-info, .email-info,.room-info ,.dateOut-info, .dateIn-info, .personal-info, .parent-info, .reason-info {
                 color: #555;
             }
     

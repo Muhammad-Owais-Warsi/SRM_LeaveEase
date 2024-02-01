@@ -12,6 +12,7 @@ export default function Form() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [register, setRegister] = useState("");
+    const [room,setRoom] = useState();
     const [dateOut, setDateOut] = useState("");
     const [dateIn, setDateIn] = useState("");
     const [reason, setReason] = useState("");
@@ -26,7 +27,7 @@ export default function Form() {
 
 
     const Onsubmit = async () => {
-        if (!name || !email || !register || !dateIn || !dateOut || !personalPhone || !parentPhone) {
+        if (!name || !email || !register || !dateIn || !dateOut || !personalPhone || !parentPhone || !room) {
             toast.error("Fill up all Fields");
         } else {
             const loadingNotification = toast.loading("Submitting...");
@@ -64,6 +65,7 @@ export default function Form() {
                     name: name,
                     register: register,
                     email: email,
+                    room:room,
                     dateIn: dateIn,
                     dateOut: dateOut,
                     personalPhone: personalPhone,
@@ -100,6 +102,10 @@ export default function Form() {
                 <div className="email-container" style={{ marginBottom: "15px" }}>
                     <input type="email" className="form" required onChange={(e) => setEmail(e.target.value)} />
                     <div className="email-head fh" style={{ position: "relative", left: "-2px" }}>Email <span>*</span></div>
+                </div>
+                <div className="room-container" style={{ marginBottom: "15px" }}>
+                    <input type="number" className="form" required onChange={(e) => setRoom(e.target.value)} />
+                    <div className="room-head fh">Room Number <span>*</span></div>
                 </div>
                 <div className="date-container" style={{ marginBottom: "15px" }}>
                     <div className="date-in" style={{ marginLeft: "95px" }}>
