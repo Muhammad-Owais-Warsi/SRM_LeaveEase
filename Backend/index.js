@@ -1,5 +1,4 @@
 import express from "express";
-import multer from "multer";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
@@ -58,11 +57,6 @@ const faSchema = new mongoose.Schema({
       required: true,
       unique: true,
     },
-    image: {
-      type: Buffer,
-      required: true,
-      contentType: String,
-    },
     email: {
       type: String,
       required: true,
@@ -119,11 +113,6 @@ const hcoordSchema = new mongoose.Schema({
       type: String,
       required: true,
       unique: true,
-    },
-    image: {
-      type: Buffer,
-      required: true,
-      contentType: String,
     },
     email: {
       type: String,
@@ -182,11 +171,6 @@ const hodSchema = new mongoose.Schema({
       required: true,
       unique: true,
     },
-    image: {
-      type: Buffer,
-      required: true,
-      contentType: String,
-    },
     email: {
       type: String,
       required: true,
@@ -218,9 +202,6 @@ const hodSchema = new mongoose.Schema({
     },
   },
 });
-
-const storage = multer.memoryStorage();
-const upload = multer({storage: storage});
 
 const User = mongoose.model("User", userSchema);
 const Fa = mongoose.model("Fa", faSchema);
@@ -535,7 +516,7 @@ app.post("/hostel_coordinator/reject", async (req, res) => {
   }
 });
 
-app.post("/form", upload.single('image'), async (req, res) => {
+app.post("/form", async (req, res) => {
   try {
     const { name, email, register, form } = req.body;
 
@@ -635,7 +616,6 @@ app.post("/form", upload.single('image'), async (req, res) => {
         }
       });
       res.status(200).json({ message: newUser });
-      console.log("image saved successfully");
     }
   } catch (err) {
     console.log(err);
