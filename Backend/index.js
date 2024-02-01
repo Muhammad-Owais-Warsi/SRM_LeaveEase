@@ -62,6 +62,10 @@ const faSchema = new mongoose.Schema({
       required: true,
       unique: true,
     },
+    room: {
+      type: Number,
+      required: true,
+    },
     dateIn: {
       type: Date,
       required: true,
@@ -115,6 +119,10 @@ const hcoordSchema = new mongoose.Schema({
       required: true,
       unique: true,
     },
+    room: {
+      type: Number,
+      required: true,
+    },
     dateIn: {
       type: Date,
       required: true,
@@ -167,6 +175,10 @@ const hodSchema = new mongoose.Schema({
       type: String,
       required: true,
       unique: true,
+    },
+    room: {
+      type: Number,
+      required: true,
     },
     dateIn: {
       type: Date,
@@ -977,6 +989,10 @@ const generateQr = async (qrData, Student, timestamp) => {
                   <div>
                       <label>Email:</label>
                       <div>${Student.email}</div>
+                  </div>
+                  <div>
+                      <label>Room Number:</label>
+                      <div>${Student.form.room}</div>
                   </div>
                   <div>
                       <label>Personal Phone Number:</label>
